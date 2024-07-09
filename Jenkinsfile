@@ -1,33 +1,27 @@
 pipeline{
-        agent {
-                docker {
-                image 'maven'
-                // args '-v $HOME/.m2:/root/.m2'
-                args '-u root'
+    agent any
+    environment {
+        PATH = "$PATH:/usr/share/maven/bin"
+    }
+    stages{
+       stage('GetCode'){
+            steps{
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/nimbuswiztech/maven_webapp.git'
+            }
+         }        
+       stage('Build'){
+            steps{
+                sh 'mvn clean package'
+            }
+        }
+       stage('deploy'){
+            steps{
+                sshagent(['Tomcat-demo']) {
+                    sh "scp -o StrictHostKeyChecking=no target/demo.war ubuntu@54.90.214.50:/var/lib/tomcat9/webapps"
+
                 }
+            }
         }
-        stages{
-              stage('Sonar Scan'){
-                  steps{
-                      script{
-                      withSonarQubeEnv('sonarserver') { 
-                      sh "mvn sonar:sonar"
-                       }
-		              // sh "mvn clean install"
-                  }
-                }  
-              }
-              stage('Maven Build'){
-                  steps{
-                      script{
-		                  sh "mvn clean install"
-                  }
-                }  
-              }
-              stage('Deploy'){
-                  steps{
-                    deploy adapters: [tomcat8(credentialsId: 'Tomcat-admin', path: '', url: 'http://3.86.240.168:8080/')], contextPath: 'demo', war: 'target/*.war'
-                }  
-              }
-        }
+       
+    }
 }
