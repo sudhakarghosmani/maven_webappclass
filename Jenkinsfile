@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('GetCode') {
             steps {
-                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/nimbuswiztech/maven_webapp.git'
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/sudhakarghosmani/maven_webappclass'
             }
         }        
         stage('Build') {
