@@ -14,13 +14,6 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
-        stage('Deploy') {
-            steps {
-                sshagent(['tomcat']) {
-                    sh 'scp -o StrictHostKeyChecking=no target/demo.war ubuntu@34.229.15.246:/home/ubuntu/'
-                    sh 'ssh ubuntu@34.229.15.246 "sudo mv /home/ubuntu/demo.war /opt/tomcat/webapps/"'
-                }
-            }
-        }
+        
     }
 }
