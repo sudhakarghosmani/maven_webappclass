@@ -10,7 +10,7 @@
   <%
     } else {
   %>
-      <h2>Well, life goes on ... Welcome to Nimbus </h2><p>(<%= num %>)</p>
+      <h2>Well, life goes on good ... Welcome to tomcat world </h2><p>(<%= num %>)</p>
   <%
     }
   %>
